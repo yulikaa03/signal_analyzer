@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, url_for, flash, jsonify, abort
 from werkzeug.utils import secure_filename
-from app import app, db
+from app.init import app, db
 from app.models import Bus, Packet, DataWord, Signal
 from app.utils import allowed_file, import_sql_file
 import os
