@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Buses{% endblock %}
+
+{% block content %}
+<div class="related-list">
+    <h2>Buses</h2>
+    
+    <table class="related-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Packets Count</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bus in items %}
+            <tr>
+                <td>{{ bus.name }}</td>
+                <td>{{ bus.description or 'N/A' }}</td>
+                <td>{{ bus.packets.count() }}</td>
+                <td>
+                    <a href="{{ url_for('signals') }}?bus_id={{ bus.id }}" class="btn btn-sm">
+                        View Signals
+                    </a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" class="text-center">No buses found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+.related-list {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.related-table {
+    width: 100%;
+    margin-top: 1rem;
+    border-collapse: collapse;
+}
+
+.related-table th {
+    background-color: var(--light-gray);
+    font-weight: 600;
+}
+
+.related-table th, 
+.related-table td {
+    padding: 0.75rem;
+    border: 1px solid #dee2e6;
+    text-align: left;
+}
+
+.related-table tr:hover {
+    background-color: rgba(52, 152, 219, 0.1);
+}
+</style>
+{% endblock %}

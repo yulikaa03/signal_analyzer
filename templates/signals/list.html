@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %}Signals{% endblock %}
+
+{% block content %}
+<div id="signals-app">
+    <div class="page-header">
+        <h2>Signals</h2>
+        <div class="actions">
+            <a href="#" class="btn" @click="showFilters = !showFilters">
+                {{ showFilters ? 'Hide' : 'Show' }} Filters
+            </a>
+        </div>
+    </div>
+
+    <div class="filters" v-if="showFilters">
+        <form method="GET" action="{{ url_for('signals') }}">
+            <div class="filter-group">
+                <label for="bus_id">Bus:</label>
+                <select name="bus_id" id="bus_id" v-model="selectedBus">
+                    <option value="">All Buses</option>
+                    {% for bus in buses %}
+                        <option value="{{ bus.id }}">{{ bus.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="packet_id">Packet:</label>
+                <select name="packet_id" id="packet_id" v-model="selectedPacket" :disabled="!selectedBus">
+                    <option value="">All Packets</option>
+                    <option v-for="packet in filteredPackets" :value="packet.id">${ packet.name }</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="data_word_id">Data Word:</label>
+                <select name="data_word_id" id="data_word_id" v-model="selectedDataWord" :disabled="!selectedPacket">
+                    <option value="">All Data Words</option>
+                    <option v-for="word in filteredDataWords" :value="word.id">${ word.name }</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Apply Filters</button>
+        </form>
+    </div>
+
+    <div class="table-responsive">
+        <table class="signals-table">
+            <thead>
+                <tr>
+                    <th @click="sortBy('code')">Code ${ getSortIcon('code') }</th>
+                    <th @click="sortBy('format')">Format ${ getSortIcon('format') }</th>
+                    <th>Algorithm</th>
+                    <th>Data Word</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for signal in signals %}
+                    <tr>
+                        <td>{{ signal.code }}</td>
+                        <td>{{ signal.format }}</td>
+                        <td class="algorithm">
+                            {% if signal.algorithm %}
+                                {{ highlight_algorithm(signal.algorithm)|safe }}
+                            {% else %}
+                                <span class="text-muted">N/A</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if signal.data_word %}
+                                {{ signal.data_word.name }}
+                            {% else %}
+                                <span class="text-muted">None</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ url_for('signal_detail', signal_id=signal.id) }}" class="btn btn-sm">
+                                Details
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">No signals found</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const { createApp, ref, computed } = Vue;
+
+createApp({
+    delimiters: ['${', '}'],
+    setup() {
+        const showFilters = ref(false);
+        const selectedBus = ref('{{ request.args.get("bus_id", "") }}');
+        const selectedPacket = ref('{{ request.args.get("packet_id", "") }}');
+        const selectedDataWord = ref('{{ request.args.get("data_word_id", "") }}');
+        const sortField = ref('{{ request.args.get("sort", "code") }}');
+        const sortDirection = ref('{{ request.args.get("direction", "asc") }}');
+        
+        const buses = JSON.parse('{{ buses|tojson|safe }}');
+        const packets = JSON.parse('{{ packets|tojson|safe }}');
+        const dataWords = JSON.parse('{{ data_words|tojson|safe }}');
+        
+        const filteredPackets = computed(() => {
+            if (!selectedBus.value) return packets;
+            return packets.filter(p => p.bus_id == selectedBus.value);
+        });
+        
+        const filteredDataWords = computed(() => {
+            if (!selectedPacket.value) return dataWords;
+            return dataWords.filter(d => d.packet_id == selectedPacket.value);
+        });
+        
+        function sortBy(field) {
+            if (sortField.value === field) {
+                sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortField.value = field;
+                sortDirection.value = 'asc';
+            }
+            window.location.href = `{{ url_for('signals') }}?sort=${sortField.value}&direction=${sortDirection.value}`;
+        }
+        
+        function getSortIcon(field) {
+            if (sortField.value !== field) return '';
+            return sortDirection.value === 'asc' ? '↑' : '↓';
+        }
+        
+        return {
+            showFilters,
+            selectedBus,
+            selectedPacket,
+            selectedDataWord,
+            sortField,
+            sortDirection,
+            buses,
+            packets: filteredPackets,
+            dataWords: filteredDataWords,
+            sortBy,
+            getSortIcon
+        };
+    }
+}).mount('#signals-app');
+</script>
+{% endblock %}

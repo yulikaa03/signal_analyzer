@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Packets{% endblock %}
+
+{% block content %}
+<div class="related-list">
+    <h2>Packets</h2>
+    
+    <table class="related-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Bus</th>
+                <th>Data Words Count</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for packet in items %}
+            <tr>
+                <td>{{ packet.name }}</td>
+                <td>
+                    {% if packet.bus %}
+                        {{ packet.bus.name }}
+                    {% else %}
+                        <span class="text-muted">None</span>
+                    {% endif %}
+                </td>
+                <td>{{ packet.data_words.count() }}</td>
+                <td>
+                    <a href="{{ url_for('signals') }}?packet_id={{ packet.id }}" class="btn btn-sm">
+                        View Signals
+                    </a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" class="text-center">No packets found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

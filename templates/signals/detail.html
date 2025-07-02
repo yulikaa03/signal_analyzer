@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block title %}Signal {{ signal.code }}{% endblock %}
+
+{% block content %}
+<div class="signal-detail">
+    <div class="signal-header">
+        <h2>Signal: {{ signal.code }}</h2>
+        
+        <div class="signal-meta">
+            <span class="badge badge-format-{{ signal.format.lower() }}">
+                Format: {{ signal.format }}
+            </span>
+            
+            {% if signal.data_word %}
+            <span class="badge">
+                Data Word: {{ signal.data_word.name }}
+            </span>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="signal-content">
+        <div class="algorithm-section">
+            <h3>Algorithm</h3>
+            
+            {% if signal.algorithm %}
+            <div class="algorithm-display">
+                {{ highlight_algorithm(signal.algorithm)|safe }}
+            </div>
+            {% else %}
+            <p class="no-algorithm">No algorithm defined for this signal</p>
+            {% endif %}
+        </div>
+        
+        {% if related_params %}
+        <div class="related-params">
+            <h3>Parameters in Algorithm</h3>
+            
+            <table class="params-table">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Format</th>
+                        <th>Data Word</th>
+                        <th>Packet</th>
+                        <th>Bus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for param in related_params %}
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('signal_detail', signal_id=param.id) }}">
+                                {{ param.code }}
+                            </a>
+                        </td>
+                        <td>{{ param.format }}</td>
+                        <td>
+                            {% if param.data_word %}
+                                {{ param.data_word.name }}
+                            {% else %}
+                                <span class="text-muted">None</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if param.data_word and param.data_word.packet %}
+                                {{ param.data_word.packet.name }}
+                            {% else %}
+                                <span class="text-muted">None</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if param.data_word and param.data_word.packet and param.data_word.packet.bus %}
+                                {{ param.data_word.packet.bus.name }}
+                            {% else %}
+                                <span class="text-muted">None</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+.signal-detail {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.signal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.signal-meta {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background-color: var(--light-gray);
+    border-radius: var(--border-radius);
+    font-size: 0.875rem;
+}
+
+.badge-format-a {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.badge-format-c {
+    background-color: #cce5ff;
+    color: #004085;
+}
+
+.badge-format-d {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.algorithm-section {
+    margin-bottom: 2rem;
+}
+
+.algorithm-display {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    border: 1px solid #dee2e6;
+    white-space: pre-wrap;
+}
+
+.no-algorithm {
+    color: var(--dark-gray);
+    font-style: italic;
+}
+
+.params-table {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.params-table th {
+    background-color: var(--light-gray);
+    font-weight: 600;
+}
+
+.params-table th, 
+.params-table td {
+    padding: 0.75rem;
+    border: 1px solid #dee2e6;
+}
+</style>
+{% endblock %}

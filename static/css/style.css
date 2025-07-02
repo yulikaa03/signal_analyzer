@@ -1,0 +1,219 @@
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2980b9;
+    --accent-color: #e74c3c;
+    --light-gray: #ecf0f1;
+    --dark-gray: #7f8c8d;
+    --text-color: #2c3e50;
+    --border-radius: 4px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 1rem 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav-list {
+    display: flex;
+    list-style: none;
+    margin-top: 1rem;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s;
+}
+
+.nav-link:hover {
+    background-color: var(--secondary-color);
+}
+
+.main {
+    padding: 2rem 0;
+}
+
+.flash-messages {
+    margin-bottom: 1.5rem;
+}
+
+.flash {
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: var(--border-radius);
+}
+
+.flash-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.flash-error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: var(--secondary-color);
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.signals-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.signals-table th, 
+.signals-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.signals-table th {
+    background-color: var(--light-gray);
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+}
+
+.signals-table tr:hover {
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+.algorithm {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.algorithm-param {
+    color: var(--primary-color);
+    text-decoration: underline;
+    cursor: help;
+    position: relative;
+}
+
+.algorithm-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    border: 1px solid var(--light-gray);
+    border-radius: var(--border-radius);
+    padding: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    min-width: 250px;
+    display: none;
+}
+
+.algorithm-param:hover .algorithm-tooltip {
+    display: block;
+}
+
+.tooltip-header {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.tooltip-body div {
+    margin-bottom: 0.25rem;
+}
+
+.algorithm-preview {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background-color: var(--light-gray);
+    border-radius: var(--border-radius);
+    font-size: 0.875rem;
+}
+
+.filters {
+    background-color: white;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.filter-group {
+    margin-bottom: 1rem;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+}
+
+.filter-group select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--light-gray);
+    border-radius: var(--border-radius);
+}
+
+.text-muted {
+    color: var(--dark-gray);
+}
+
+.text-center {
+    text-align: center;
+}

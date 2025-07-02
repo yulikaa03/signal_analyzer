@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Signal Analyzer{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>Signal Analyzer</h1>
+    <p class="lead">Web application for analyzing signal data from MySQL database</p>
+    
+    <div class="cta-buttons">
+        <a href="{{ url_for('upload') }}" class="btn btn-primary btn-lg">Upload Database</a>
+        <a href="{{ url_for('signals') }}" class="btn btn-outline btn-lg">View Signals</a>
+    </div>
+</div>
+
+<div class="features">
+    <div class="feature">
+        <h3>Database Upload</h3>
+        <p>Upload your MySQL database files (.sql) for analysis</p>
+    </div>
+    
+    <div class="feature">
+        <h3>Signal Analysis</h3>
+        <p>View and analyze signals with powerful filtering options</p>
+    </div>
+    
+    <div class="feature">
+        <h3>Algorithm Visualization</h3>
+        <p>Interactive visualization of signal algorithms with parameter highlighting</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+.hero {
+    text-align: center;
+    padding: 4rem 0;
+    background: linear-gradient(135deg, #3498db, #2c3e50);
+    color: white;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.lead {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.btn-lg {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid white;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.feature {
+    background: white;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.feature h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+</style>
+{% endblock %}

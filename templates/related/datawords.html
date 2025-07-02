@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Data Words{% endblock %}
+
+{% block content %}
+<div class="related-list">
+    <h2>Data Words</h2>
+    
+    <table class="related-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Packet</th>
+                <th>Bus</th>
+                <th>Signals Count</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for word in items %}
+            <tr>
+                <td>{{ word.name }}</td>
+                <td>
+                    {% if word.packet %}
+                        {{ word.packet.name }}
+                    {% else %}
+                        <span class="text-muted">None</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if word.packet and word.packet.bus %}
+                        {{ word.packet.bus.name }}
+                    {% else %}
+                        <span class="text-muted">None</span>
+                    {% endif %}
+                </td>
+                <td>{{ word.signals.count() }}</td>
+                <td>
+                    <a href="{{ url_for('signals') }}?data_word_id={{ word.id }}" class="btn btn-sm">
+                        View Signals
+                    </a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" class="text-center">No data words found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
